@@ -88,10 +88,6 @@ export function useCourseData(
   };
 
   const handleDropCourse = async (course: any) => {
-    const confirmDrop = await confirm(
-      `确定要退掉课程 "${course.KCM || course.kcm}" 吗？此操作不可撤销！`,
-    );
-    if (!confirmDrop) return;
     if (!selectedBatch) {
       addLog("未选择选课批次，无法退课", "warn");
       return;

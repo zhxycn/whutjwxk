@@ -3,6 +3,7 @@ import SidebarControls from "./SidebarControls";
 import LogView from "../common/LogView";
 import FilterHeader from "./FilterHeader";
 import DashboardContent from "./DashboardContent";
+import ConfirmModal from "../common/ConfirmModal";
 import { useLogger } from "../../hooks/useLogger";
 import { useBatches } from "../../hooks/useBatches";
 import { useCourseData } from "../../hooks/useCourseData";
@@ -23,6 +24,8 @@ interface Props {
 export default function Dashboard({ studentInfo }: Props) {
   const [view, setView] = useState<"list" | "selected" | "cart">("list");
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [isDropModalOpen, setIsDropModalOpen] = useState(false);
+  const [courseToDrop, setCourseToDrop] = useState<any>(null);
 
   const { log, addLog, clearLog } = useLogger();
   const {
@@ -68,6 +71,19 @@ export default function Dashboard({ studentInfo }: Props) {
     setExpandedGroupId((prev) => (prev === id ? null : id));
   };
 
+  const onDropClick = (course: any) => {
+    setCourseToDrop(course);
+    setIsDropModalOpen(true);
+  };
+
+  const handleConfirmDrop = () => {
+    if (courseToDrop) {
+      handleDropCourse(courseToDrop);
+    }
+    setIsDropModalOpen(false);
+    setCourseToDrop(null);
+  };
+
   useEffect(() => {
     setExpandedGroupId(null);
   }, [
@@ -82,7 +98,7 @@ export default function Dashboard({ studentInfo }: Props) {
   ]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 h-full">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 h-full relative">
       <div className="md:col-span-4 space-y-4 flex flex-col h-full overflow-hidden">
         <SidebarControls
           batches={batches}
@@ -142,9 +158,21 @@ export default function Dashboard({ studentInfo }: Props) {
           isGrabbing={isGrabbing}
           toggleGrab={toggleGrab}
           selectedCourses={selectedCourses}
-          onDrop={handleDropCourse}
+          onDrop={onDropClick}
         />
       </div>
+
+      <ConfirmModal
+        isOpen={isDropModalOpen}
+        title="确认退课"
+        content={`确定要退掉课程 "${
+          courseToDrop?.KCM || courseToDrop?.kcm || ""
+        }" 吗？此操作不可撤销！`}
+        onConfirm={handleConfirmDrop}
+        onCancel={() => setIsDropModalOpen(false)}
+        confirmText="确定退课"
+        cancelText="我再想想"
+      />
     </div>
   );
 }
