@@ -62,7 +62,7 @@ export default function CourseList({
                     const isInCart = cart.some(
                       (c) =>
                         (c.JXBID || c.jxb_id || c.do_jxb_id || c.id) ===
-                        courseId
+                        courseId,
                     );
                     const capacity =
                       course.KCRL ||
@@ -157,7 +157,7 @@ export default function CourseList({
           const courseId =
             course.JXBID || course.jxb_id || course.do_jxb_id || course.id;
           const isInCart = cart.some(
-            (c) => (c.JXBID || c.jxb_id || c.do_jxb_id || c.id) === courseId
+            (c) => (c.JXBID || c.jxb_id || c.do_jxb_id || c.id) === courseId,
           );
           const capacity =
             course.KCRL ||

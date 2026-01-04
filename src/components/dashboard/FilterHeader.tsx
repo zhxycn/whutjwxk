@@ -79,8 +79,8 @@ export default function FilterHeader({
           {view === "list"
             ? `${filteredCount} 组课程`
             : view === "cart"
-            ? cartCount
-            : selectedCount}
+              ? cartCount
+              : selectedCount}
         </span>
       </div>
       {view === "list" && (

@@ -5,4 +5,4 @@ mod impl_courses;
 pub mod models;
 
 pub use client::JwxkClient;
-pub use models::{CaptchaResponse, LoginResponse};
+pub use models::{CaptchaResponse, LoginResponse, CommandError};

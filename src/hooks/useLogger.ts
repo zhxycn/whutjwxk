@@ -1,14 +1,35 @@
 import { useState } from "react";
 
-export function useLogger() {
-  const [log, setLog] = useState<string[]>([]);
+export type LogLevel = "info" | "success" | "warn" | "error";
 
-  const addLog = (msg: string) => {
+export interface LogItem {
+  id: string;
+  level: LogLevel;
+  message: string;
+  timestamp: string;
+  details?: any;
+}
+
+export function useLogger() {
+  const [log, setLog] = useState<LogItem[]>([]);
+
+  const addLog = (msg: string, level: LogLevel = "info", details?: any) => {
     setLog((prev) => {
-      const newLogs = [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev];
+      const newItem: LogItem = {
+        id: Math.random().toString(36).substr(2, 9),
+        level,
+        message: msg,
+        timestamp: new Date().toLocaleTimeString(),
+        details,
+      };
+      const newLogs = [newItem, ...prev];
       return newLogs.slice(0, 200);
     });
   };
 
-  return { log, addLog };
+  const clearLog = () => {
+    setLog([]);
+  };
+
+  return { log, addLog, clearLog };
 }

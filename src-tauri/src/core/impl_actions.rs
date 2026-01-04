@@ -1,4 +1,5 @@
 use super::client::JwxkClient;
+use super::CommandError;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 
 impl JwxkClient {
@@ -8,10 +9,12 @@ impl JwxkClient {
         secret_val: &str,
         batch_id: &str,
         clazz_type: &str,
-    ) -> Result<serde_json::Value, String> {
+    ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/add";
         let token_guard = self.token.lock().await;
-        let token = token_guard.as_ref().ok_or("Not logged in")?;
+        let token = token_guard
+            .as_ref()
+            .ok_or_else(|| CommandError::from("Not logged in".to_string()))?;
 
         let mut headers = HeaderMap::new();
         headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
@@ -34,9 +37,13 @@ impl JwxkClient {
             .body(serde_urlencoded::to_string(&params).unwrap_or_default())
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| {
+                CommandError::new("Network error during grab_course", format!("{:?}", e))
+            })?;
 
-        let json: serde_json::Value = resp.json().await.map_err(|e| e.to_string())?;
+        let json: serde_json::Value = resp.json().await.map_err(|e| {
+            CommandError::new("Failed to parse grab_course response", format!("{:?}", e))
+        })?;
         Ok(json)
     }
 
@@ -45,10 +52,12 @@ impl JwxkClient {
         clazz_id: &str,
         secret_val: &str,
         batch_id: &str,
-    ) -> Result<serde_json::Value, String> {
+    ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/del";
         let token_guard = self.token.lock().await;
-        let token = token_guard.as_ref().ok_or("Not logged in")?;
+        let token = token_guard
+            .as_ref()
+            .ok_or_else(|| CommandError::from("Not logged in".to_string()))?;
 
         let mut headers = HeaderMap::new();
         headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
@@ -72,9 +81,13 @@ impl JwxkClient {
             .body(serde_urlencoded::to_string(&params).unwrap_or_default())
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| {
+                CommandError::new("Network error during drop_course", format!("{:?}", e))
+            })?;
 
-        let json: serde_json::Value = resp.json().await.map_err(|e| e.to_string())?;
+        let json: serde_json::Value = resp.json().await.map_err(|e| {
+            CommandError::new("Failed to parse drop_course response", format!("{:?}", e))
+        })?;
         Ok(json)
     }
 }

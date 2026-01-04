@@ -12,13 +12,15 @@ const weekdayMap: Record<string, string> = {
 
 export function buildTimeText(course: AnyCourse): string {
   if (Array.isArray(course?.SKSJ) && course.SKSJ.length > 0) {
-    const parts = (course.SKSJ as any[]).map((s: any) => {
-      const weekRange =
-        (s.QSZC && s.JZZC) ? `${s.QSZC}-${s.JZZC}周` : (s.ZC ? `${s.ZC}周` : "");
-      const day = s.SKXQ ? (weekdayMap[String(s.SKXQ)] || `星期${s.SKXQ}`) : "";
-      const period = (s.KSJC && s.JSJC) ? `第${s.KSJC}-${s.JSJC}节` : "";
-      return [weekRange, day, period].filter(Boolean).join(" ");
-    }).filter(Boolean);
+    const parts = (course.SKSJ as any[])
+      .map((s: any) => {
+        const weekRange =
+          s.QSZC && s.JZZC ? `${s.QSZC}-${s.JZZC}周` : s.ZC ? `${s.ZC}周` : "";
+        const day = s.SKXQ ? weekdayMap[String(s.SKXQ)] || `星期${s.SKXQ}` : "";
+        const period = s.KSJC && s.JSJC ? `第${s.KSJC}-${s.JSJC}节` : "";
+        return [weekRange, day, period].filter(Boolean).join(" ");
+      })
+      .filter(Boolean);
     return parts.join("、");
   }
   const y = course?.YPSJDD || course?.SJDD || "";
@@ -26,7 +28,9 @@ export function buildTimeText(course: AnyCourse): string {
     const dayMatch = y.match(/星期[一二三四五六日七]/);
     const periodMatch = y.match(/第(\d+)(?:[节\-到至~]?(?:第)?(\d+))?节/);
     const periodStr = periodMatch
-      ? (periodMatch[2] ? `第${periodMatch[1]}-${periodMatch[2]}节` : `第${periodMatch[1]}节`)
+      ? periodMatch[2]
+        ? `第${periodMatch[1]}-${periodMatch[2]}节`
+        : `第${periodMatch[1]}节`
       : "";
     return [dayMatch ? dayMatch[0] : "", periodStr].filter(Boolean).join(" ");
   }

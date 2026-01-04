@@ -1,17 +1,20 @@
 use super::client::JwxkClient;
-use super::models::{CaptchaResponse, LoginResponse};
+use super::models::{CaptchaResponse, CommandError, LoginResponse};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, ORIGIN, REFERER};
 
 impl JwxkClient {
-    pub async fn get_captcha(&self) -> Result<CaptchaResponse, String> {
+    pub async fn get_captcha(&self) -> Result<CaptchaResponse, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/auth/captcha";
         let resp = self
             .client
             .post(url)
             .send()
             .await
-            .map_err(|e| e.to_string())?;
-        let json: serde_json::Value = resp.json().await.map_err(|e| e.to_string())?;
+            .map_err(|e| CommandError::new("Network error during get_captcha", format!("{:?}", e)))?;
+        let json: serde_json::Value = resp
+            .json()
+            .await
+            .map_err(|e| CommandError::new("Failed to parse captcha response", format!("{:?}", e)))?;
 
         if json["code"].as_i64() == Some(200) {
             let data = &json["data"];
@@ -20,7 +23,7 @@ impl JwxkClient {
                 image_base64: data["captcha"].as_str().unwrap_or("").to_string(),
             })
         } else {
-            Err("Failed to get captcha".to_string())
+            Err(CommandError::from("Failed to get captcha".to_string()))
         }
     }
 
@@ -30,7 +33,7 @@ impl JwxkClient {
         password: &str,
         captcha: &str,
         uuid: &str,
-    ) -> Result<LoginResponse, String> {
+    ) -> Result<LoginResponse, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/auth/login";
         let encrypted_password = Self::aes_encrypt(password);
 
@@ -67,9 +70,12 @@ impl JwxkClient {
             .body(serde_urlencoded::to_string(&params).unwrap_or_default())
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| CommandError::new("Network error during login", format!("{:?}", e)))?;
 
-        let json: serde_json::Value = resp.json().await.map_err(|e| e.to_string())?;
+        let json: serde_json::Value = resp
+            .json()
+            .await
+            .map_err(|e| CommandError::new("Failed to parse login response", format!("{:?}", e)))?;
 
         if json["code"].as_i64() == Some(200) {
             let token = json["data"]["token"].as_str().unwrap_or("").to_string();
@@ -97,7 +103,7 @@ impl JwxkClient {
         }
     }
 
-    pub async fn check_session(&self) -> Result<LoginResponse, String> {
+    pub async fn check_session(&self) -> Result<LoginResponse, CommandError> {
         let token_guard = self.token.lock().await;
         let student_guard = self.student_info.lock().await;
 

@@ -58,7 +58,7 @@ export default function LoginForm({ addLog, onLoginSuccess }: Props) {
         loginname,
         password,
         captcha,
-        uuid
+        uuid,
       )) as LoginResponse;
       if (res.success) {
         addLog("登录成功!");

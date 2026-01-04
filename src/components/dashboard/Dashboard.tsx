@@ -24,7 +24,7 @@ export default function Dashboard({ studentInfo }: Props) {
   const [view, setView] = useState<"list" | "selected" | "cart">("list");
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
 
-  const { log, addLog } = useLogger();
+  const { log, addLog, clearLog } = useLogger();
   const {
     batches,
     selectedBatch,
@@ -94,7 +94,7 @@ export default function Dashboard({ studentInfo }: Props) {
           intervalMs={intervalMs}
           onIntervalChange={setIntervalMs}
         />
-        <LogView log={log} />
+        <LogView log={log} onClear={clearLog} />
         <div className="mt-auto">
           <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded hover:bg-gray-50">
             <img src="/tauri.svg" alt="Tauri" className="w-5 h-5" />
