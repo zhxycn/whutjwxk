@@ -15,6 +15,22 @@
 
 前往 [Release](https://github.com/zhxycn/whutjwxk/releases) 页面下载最新版本的程序。
 
+若您在使用过程中遇到任何问题，欢迎提交 [Issue](https://github.com/zhxycn/whutjwxk/issues)。
+
+### 小提示
+
+由于程序未经签名，在运行时可能会出现安全警告。
+
+对于 Windows 10/11 用户，若 Windows Defender 对程序进行了拦截，请在安全设置中添加例外。
+
+对于 MacOS 用户，若提示 “程序已损坏，无法打开”，请在终端中运行以下命令：
+
+```bash
+xattr -cr Applications/whutjwxk.app
+```
+
+若您自定义了程序的安装路径，请将命令中的 `Applications/whutjwxk.app` 替换为您的实际安装路径。
+
 ## 🛠️ 继续开发
 
 ```bash
