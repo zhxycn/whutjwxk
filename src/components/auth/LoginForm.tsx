@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   login as apiLogin,
   getCaptcha as apiGetCaptcha,
-} from "../services/jwxk";
+} from "../../services/jwxk";
 
 interface CaptchaResponse {
   uuid: string;

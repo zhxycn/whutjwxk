@@ -95,7 +95,7 @@ export default function CartList({
               className={`w-full p-3 rounded-lg text-lg font-bold transition shadow-md flex justify-center items-center gap-2 ${
                 isGrabbing
                   ? "bg-red-500 hover:bg-red-600 text-white"
-                  : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                  : "bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
               }`}
             >
               {isGrabbing ? (

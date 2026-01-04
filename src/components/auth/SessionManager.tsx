@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { checkSession as apiCheckSession } from "../services/jwxk";
+import { checkSession as apiCheckSession } from "../../services/jwxk";
 import LoginForm from "./LoginForm";
-import Dashboard from "./Dashboard";
+import Dashboard from "../dashboard/Dashboard";
 
 interface LoginResponse {
   success: boolean;

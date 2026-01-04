@@ -25,7 +25,7 @@ export default function SidebarControls({
   onIntervalChange,
 }: Props) {
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex-shrink-0">
+    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 shrink-0">
       <h3 className="font-bold mb-4 text-gray-800 flex items-center gap-2">
         <span>🛠️</span> 选课控制台
       </h3>
@@ -63,7 +63,7 @@ export default function SidebarControls({
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium mb-1 text-gray-500 flex justify-between">
+          <label className="text-xs font-medium mb-1 text-gray-500 flex justify-between">
             <span>请求间隔</span>
             <span className="text-blue-600">{intervalMs / 1000} s</span>
           </label>

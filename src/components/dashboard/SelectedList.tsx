@@ -1,4 +1,4 @@
-import { buildTimeText, buildPlaceText } from "../utils/schedule";
+import { buildTimeText, buildPlaceText } from "../../utils/schedule";
 
 type Props = {
   selectedCourses: any[];
