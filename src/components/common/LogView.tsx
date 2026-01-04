@@ -130,7 +130,7 @@ export default function LogView({ log, onClear }: Props) {
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-2">
             <span className="text-2xl opacity-20">📋</span>
-            <span className="italic opacity-50">暂无日志...</span>
+            <span className="opacity-50">暂无日志...</span>
           </div>
         )}
       </div>
