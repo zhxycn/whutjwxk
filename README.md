@@ -15,6 +15,8 @@
 
 前往 [Release](https://github.com/zhxycn/whutjwxk/releases) 页面下载最新版本的程序。
 
+若您因网络原因不便通过 GitHub 下载，可前往 [CNB Release](https://cnb.cool/zhxycn/whutjwxk/-/releases) 下载，二者内容与版本一致。
+
 若您在使用过程中遇到任何问题，欢迎提交 [Issue](https://github.com/zhxycn/whutjwxk/issues)。
 
 ### 小提示
