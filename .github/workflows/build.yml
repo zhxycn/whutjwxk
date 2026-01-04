@@ -1,0 +1,72 @@
+name: build
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published, prereleased]
+
+permissions:
+  contents: write
+
+jobs:
+  tauri-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - name: Build Tauri app (macOS)
+        run: bunx --bun tauri build
+
+      - name: Prepare DMG filename
+        run: |
+          DMG_DIR="src-tauri/target/release/bundle/dmg"
+          DMG_FILE="$(ls "$DMG_DIR"/*.dmg | head -n 1)"
+          if [ -f "$DMG_FILE" ]; then
+            DEST="whutjwxk.dmg"
+            cp "$DMG_FILE" "$DEST"
+            echo "DMG_NAME=$DEST" >> $GITHUB_ENV
+          else
+            echo "DMG not found in $DMG_DIR" && exit 1
+          fi
+      - name: Upload DMG to Release
+        if: ${{ github.event_name == 'release' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.DMG_NAME }}
+
+  tauri-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - name: Build Tauri app (Windows)
+        run: bunx --bun tauri build
+      - name: Upload EXE to Release
+        if: ${{ github.event_name == 'release' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          files: src-tauri/target/release/whutjwxk.exe
