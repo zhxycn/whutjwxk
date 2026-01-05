@@ -9,7 +9,7 @@ export default function Updater() {
   const [version, setVersion] = useState("");
   const [body, setBody] = useState("");
   const [status, setStatus] = useState<"idle" | "downloading" | "ready">(
-    "idle"
+    "idle",
   );
   const [progress, setProgress] = useState(0);
 
