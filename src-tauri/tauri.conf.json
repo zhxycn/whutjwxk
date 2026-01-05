@@ -37,7 +37,8 @@
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://github.com/zhxycn/whutjwxk/releases/latest/download/latest.json"
+        "https://github.com/zhxycn/whutjwxk/releases/latest/download/latest.json",
+        "https://cnb.cool/zhxycn/whutjwxk/-/releases/latest/download/fallback.json"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEwNUYzMjA0QjBENUU5NTMKUldSVDZkV3dCREpmb0dRS3BjM0NrdU80VHJ4YzdhTEJrcGJZRk8weUYyOXFDbnpxRjVKNEJ2UkIK"
     }

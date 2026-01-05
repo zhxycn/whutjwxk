@@ -50,3 +50,26 @@ jobs:
           prerelease: false
           includeUpdaterJson: true
           uploadPlainBinary: true
+
+  generate-fallback-json:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: generate and upload fallback.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # download latest.json from the release
+          gh release download ${{ github.ref_name }} -p "latest.json" || { echo "latest.json not found"; exit 1; }
+          
+          # replace GitHub URLs with CNB URLs
+          # GitHub: https://github.com/zhxycn/whutjwxk/releases/download/
+          # CNB:    https://cnb.cool/zhxycn/whutjwxk/-/releases/download/
+          sed 's|https://github.com/zhxycn/whutjwxk/releases/download/|https://cnb.cool/zhxycn/whutjwxk/-/releases/download/|g' latest.json > fallback.json
+          
+          # upload fallback.json to the release
+          gh release upload ${{ github.ref_name }} fallback.json --clobber
