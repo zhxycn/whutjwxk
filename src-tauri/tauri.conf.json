@@ -32,7 +32,17 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "copyright": "Copyright © 2026-Present zhxycn. All rights reserved."
+    "copyright": "Copyright © 2026-Present zhxycn. All rights reserved.",
+    "windows": {
+      "wix": {
+        "language": "zh-CN"
+      },
+      "nsis": {
+        "languages": [
+          "SimpChinese"
+        ]
+      }
+    }
   },
   "plugins": {
     "updater": {
