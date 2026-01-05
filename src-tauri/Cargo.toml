@@ -32,4 +32,6 @@ ecb = "0.1.2"
 cipher = { version = "0.4.4", features = ["alloc", "block-padding"] }
 tokio = { version = "1.49.0", features = ["full"] }
 serde_urlencoded = "0.7.1"
+tauri-plugin-updater = "2.9.0"
+tauri-plugin-process = "2.3.1"
 

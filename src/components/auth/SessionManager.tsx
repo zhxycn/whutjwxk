@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { checkSession as apiCheckSession } from "../../services/jwxk";
 import LoginForm from "./LoginForm";
 import Dashboard from "../dashboard/Dashboard";
+import Updater from "../common/Updater";
 
 interface LoginResponse {
   success: boolean;
@@ -48,7 +49,10 @@ export default function SessionManager() {
             />
           </div>
         ) : (
-          <Dashboard studentInfo={studentInfo} />
+          <>
+            <Updater />
+            <Dashboard studentInfo={studentInfo} />
+          </>
         )}
       </div>
     </div>
