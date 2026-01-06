@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { GitCommitHorizontal } from "lucide-react";
 import SidebarControls from "./SidebarControls";
 import LogView from "../common/LogView";
 import FilterHeader from "./FilterHeader";
@@ -120,9 +121,19 @@ export default function Dashboard({ studentInfo }: Props) {
               href="https://github.com/zhxycn/whutjwxk"
               target="_blank"
               rel="noreferrer"
-              className="text-xs text-blue-600 hover:text-blue-700"
+              className="text-xs text-blue-500 hover:text-blue-700"
             >
               GitHub
+            </a>
+            <span className="text-gray-300 hidden lg:inline">•</span>
+            <a
+              href={`https://github.com/zhxycn/whutjwxk/commit/${__COMMIT_HASH__}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs text-gray-400 hover:text-gray-600 font-mono hidden lg:flex items-center gap-1"
+            >
+              <GitCommitHorizontal className="w-3 h-3" />
+              {__COMMIT_HASH__}
             </a>
           </div>
         </div>
