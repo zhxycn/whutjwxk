@@ -40,10 +40,17 @@ export default function LogView({ log, onClear }: Props) {
   const handleCopy = () => {
     if (log.length === 0) return;
     const text = log
-      .map(
-        (item) =>
-          `[${item.timestamp}] [${item.level.toUpperCase()}] ${item.message}`,
-      )
+      .map((item) => {
+        let line = `[${item.timestamp}] [${item.level.toUpperCase()}] ${item.message}`;
+        if (item.details) {
+          const detailsStr =
+            typeof item.details === "string"
+              ? item.details
+              : JSON.stringify(item.details, null, 2);
+          line += `\n${detailsStr}`;
+        }
+        return line;
+      })
       .join("\n");
     navigator.clipboard.writeText(text).then(() => {
       setIsCopied(true);
