@@ -16,7 +16,8 @@ pub fn run() {
             api::get_course_list,
             api::grab_course,
             api::get_selected_courses,
-            api::drop_course
+            api::drop_course,
+            api::get_class_types
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

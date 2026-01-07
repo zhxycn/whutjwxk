@@ -32,3 +32,6 @@ export const dropCourse = (
   secretVal: string,
   batchId: string,
 ) => invoke("drop_course", { clazzId, secretVal, batchId });
+
+export const getClassTypes = (batchId: string) =>
+  invoke("get_class_types", { batchId });

@@ -62,3 +62,11 @@ pub async fn drop_course(
 ) -> Result<serde_json::Value, CommandError> {
     state.drop_course(&clazz_id, &secret_val, &batch_id).await
 }
+
+#[tauri::command]
+pub async fn get_class_types(
+    state: State<'_, JwxkClient>,
+    batch_id: String,
+) -> Result<serde_json::Value, CommandError> {
+    state.get_class_types(&batch_id).await
+}
