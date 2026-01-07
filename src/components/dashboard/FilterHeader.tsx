@@ -1,3 +1,5 @@
+import { X } from "lucide-react";
+
 interface FilterHeaderProps {
   view: "list" | "selected" | "cart";
   setView: (view: "list" | "selected" | "cart") => void;
@@ -39,6 +41,7 @@ export default function FilterHeader({
   onRefresh,
   onFetchSelected,
 }: FilterHeaderProps) {
+  const hasSearch = searchTerm.trim().length > 0;
   return (
     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50 flex flex-col gap-3">
       <div className="flex justify-between items-center">
@@ -91,13 +94,23 @@ export default function FilterHeader({
             <input
               type="text"
               placeholder="搜索课程/教师/编号..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 outline-none"
+              className={`w-full pl-8 ${hasSearch ? "pr-8" : "pr-3"} py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 outline-none`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <span className="absolute left-2.5 top-1.5 text-gray-400 text-xs">
               🔍
             </span>
+            {hasSearch && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-2 top-1.5 text-gray-400 hover:text-gray-600 transition-colors p-0.5"
+                title="清空"
+                aria-label="清空"
+              >
+                <X size={14} />
+              </button>
+            )}
           </div>
           <div className="flex gap-2 items-center flex-wrap">
             <select
