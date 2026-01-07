@@ -107,7 +107,7 @@ export default function LogView({ log, onClear }: Props) {
                       {item.details && (
                         <button
                           onClick={() => toggleExpand(item.id)}
-                          className="text-gray-500 hover:text-gray-300 transition-colors p-0.5"
+                          className="ml-auto text-gray-500 hover:text-gray-300 transition-colors p-0.5"
                           title={
                             expandedLogs.has(item.id) ? "收起详情" : "展开详情"
                           }

@@ -23,7 +23,7 @@ export function useLogger() {
         details,
       };
       const newLogs = [newItem, ...prev];
-      return newLogs.slice(0, 200);
+      return newLogs.slice(0, 100);
     });
   };
 

@@ -25,12 +25,12 @@ export function useCourseData(
       while (true) {
         const res: any = await getCourseList(selectedBatch, selectedType, page);
         if (res.code !== 200) {
-          addLog(`第${page}页获取失败`, "error", res);
+          addLog(`第 ${page} 页获取失败`, "error", res);
           break;
         }
         const rows = res.data?.rows || [];
         allRows.push(...rows);
-        addLog(`第${page}页获取到 ${rows.length} 条`, "info");
+        addLog(`第 ${page} 页获取到 ${rows.length} 条`, "info");
         if (rows.length < PAGE_SIZE) {
           break;
         }
