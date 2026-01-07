@@ -104,7 +104,7 @@ export function useGrabber(
               }
             } else {
               consecutiveAuthFailures = 0;
-              addLog(`抢课失败 ${item.KCM}: ${res.msg}`, "error");
+              addLog(`抢课失败 ${item.KCM}`, "error", res);
               setCart((prev) =>
                 prev.map((c) => {
                   const cId = c.JXBID || c.jxb_id || c.do_jxb_id || c.id;
@@ -117,7 +117,7 @@ export function useGrabber(
           }
         } catch (e: any) {
           const errorMsg = e?.msg || String(e);
-          addLog(`抢课错误 ${item.KCM}: ${errorMsg}`, "error", e);
+          addLog(`抢课错误 ${item.KCM}`, "error", e);
           setCart((prev) =>
             prev.map((c) => {
               const cId = c.JXBID || c.jxb_id || c.do_jxb_id || c.id;

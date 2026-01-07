@@ -29,7 +29,7 @@ export function useCourseData(
       while (true) {
         const res: any = await getCourseList(selectedBatch, selectedType, page);
         if (res.code !== 200) {
-          addLog(`第${page}页获取失败: ${res.msg}`, "error", res);
+          addLog(`第${page}页获取失败`, "error", res);
           break;
         }
         const rows = res.data?.rows || [];
@@ -59,8 +59,7 @@ export function useCourseData(
       );
     } catch (e: any) {
       setCourses([]);
-      const msg = e?.msg || String(e);
-      addLog(`获取课程错误: ${msg}`, "error", e);
+      addLog("获取课程错误", "error", e);
     } finally {
       setLoading(false);
     }
@@ -78,10 +77,10 @@ export function useCourseData(
           "success",
         );
       } else {
-        addLog(`获取已选课程失败: ${res.msg}`, "error");
+        addLog("获取已选课程失败", "error", res);
       }
     } catch (e) {
-      addLog(`获取已选课程错误: ${e}`, "error");
+      addLog("获取已选课程错误", "error", e);
     } finally {
       setLoading(false);
     }
@@ -102,11 +101,10 @@ export function useCourseData(
         addLog(`退课成功: ${course.KCM || course.kcm}`, "success");
         fetchSelectedCourses();
       } else {
-        addLog(`退课失败: ${res.msg || "未知错误"}`, "error");
+        addLog("退课失败", "error", res);
       }
     } catch (e: any) {
-      const msg = e?.msg || String(e);
-      addLog(`退课请求错误: ${msg}`, "error", e);
+      addLog("退课请求错误", "error", e);
     } finally {
       setLoading(false);
     }
