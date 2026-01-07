@@ -16,10 +16,6 @@ export function useCourseData(
   const [loading, setLoading] = useState(false);
 
   const fetchCourses = async () => {
-    if (!selectedBatch) {
-      addLog("请先选择选课批次", "warn");
-      return;
-    }
     setLoading(true);
     try {
       addLog(`正在获取课程列表: ${selectedType}...`, "info");
@@ -112,15 +108,22 @@ export function useCourseData(
 
   useEffect(() => {
     if (selectedBatch) {
+      setCourses([]);
+      setSelectedCourses([]);
+    }
+  }, [selectedBatch]);
+
+  useEffect(() => {
+    if (!selectedType) {
+      setCourses([]);
+    }
+  }, [selectedType]);
+
+  useEffect(() => {
+    if (selectedBatch && selectedType) {
       fetchCourses();
     }
   }, [selectedBatch, selectedType]);
-
-  useEffect(() => {
-    if (selectedBatch) {
-      fetchSelectedCourses();
-    }
-  }, [selectedBatch]);
 
   return {
     courses,

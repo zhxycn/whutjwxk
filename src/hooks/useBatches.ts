@@ -10,7 +10,7 @@ export interface Batch {
 export function useBatches(studentInfo: any | null) {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [selectedBatch, setSelectedBatch] = useState<string>("");
-  const [selectedType, setSelectedType] = useState<string>("TJKC");
+  const [selectedType, setSelectedType] = useState<string>("");
 
   useEffect(() => {
     if (

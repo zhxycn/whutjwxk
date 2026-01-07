@@ -10,9 +10,7 @@ import { useBatches } from "../../hooks/useBatches";
 import { useCourseData } from "../../hooks/useCourseData";
 import { useCourseFilter } from "../../hooks/useCourseFilter";
 import { useGrabber } from "../../hooks/useGrabber";
-import { getClassTypes as apiGetClassTypes } from "../../services/jwxk";
-
-type ClassTypesMap = Record<string, string>;
+import { useClassTypes } from "../../hooks/useClassTypes";
 
 interface Props {
   studentInfo: any | null;
@@ -23,7 +21,6 @@ export default function Dashboard({ studentInfo }: Props) {
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [isDropModalOpen, setIsDropModalOpen] = useState(false);
   const [courseToDrop, setCourseToDrop] = useState<any>(null);
-  const [classTypes, setClassTypes] = useState<ClassTypesMap>({});
 
   const { log, addLog, clearLog } = useLogger();
   const {
@@ -33,6 +30,8 @@ export default function Dashboard({ studentInfo }: Props) {
     selectedType,
     setSelectedType,
   } = useBatches(studentInfo);
+
+  const { classTypes, defaultType } = useClassTypes(selectedBatch, addLog);
 
   const {
     courses,
@@ -66,31 +65,8 @@ export default function Dashboard({ studentInfo }: Props) {
   } = useGrabber(selectedBatch, selectedType, addLog);
 
   useEffect(() => {
-    const loadTypes = async () => {
-      if (!selectedBatch) return;
-      try {
-        const res: any = await apiGetClassTypes(selectedBatch);
-        const list = Array.isArray(res?.list) ? res.list : [];
-        const mapping: ClassTypesMap = {};
-        for (const item of list) {
-          const key = item?.teachingClassType;
-          const name = item?.displayName;
-          if (typeof key === "string" && typeof name === "string") {
-            if (key === "YXKC") continue;
-            mapping[key] = name;
-          }
-        }
-        setClassTypes(mapping);
-        const firstKey = Object.keys(mapping)[0];
-        if (firstKey) {
-          setSelectedType(firstKey);
-        }
-      } catch (e) {
-        addLog("获取课程类型失败", "error", e);
-      }
-    };
-    loadTypes();
-  }, [selectedBatch]);
+    setSelectedType(defaultType || "");
+  }, [defaultType]);
 
   const toggleGroup = (id: string) => {
     setExpandedGroupId((prev) => (prev === id ? null : id));
@@ -128,7 +104,10 @@ export default function Dashboard({ studentInfo }: Props) {
         <SidebarControls
           batches={batches}
           selectedBatch={selectedBatch}
-          onSelectedBatchChange={setSelectedBatch}
+          onSelectedBatchChange={(code) => {
+            setSelectedBatch(code);
+            setSelectedType("");
+          }}
           classTypes={classTypes}
           selectedType={selectedType}
           onSelectedTypeChange={setSelectedType}
@@ -179,6 +158,7 @@ export default function Dashboard({ studentInfo }: Props) {
           setOnlyAvailable={setOnlyAvailable}
           loading={loading}
           selectedBatch={selectedBatch}
+          selectedType={selectedType}
           onRefresh={fetchCourses}
           onFetchSelected={fetchSelectedCourses}
         />
