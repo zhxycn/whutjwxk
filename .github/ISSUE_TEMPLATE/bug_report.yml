@@ -1,0 +1,79 @@
+name: 🐛 Bug 报告
+description: 报告程序中的错误或异常行为
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您报告问题！请尽可能详细地填写以下信息，这将帮助我们更快地定位和解决问题。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 请清晰、简洁地描述遇到的问题，可附上截图
+      placeholder: 例如：在尝试登录时，程序崩溃了
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请详细描述如何复现这个问题
+      placeholder: |
+        1. 打开程序
+        2. 登录账号
+        3. 程序崩溃
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: 操作系统
+      description: 您使用的操作系统和版本
+      options:
+        - Windows 7/8
+        - Windows 10/11
+        - macOS (Apple Silicon)
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 程序版本
+      description: 您使用的程序版本号，或位于页面左下角的 commit hash
+      placeholder: 例如：0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志信息
+      description: 如果有错误日志或控制台输出，请粘贴至此（请移除敏感信息如账号密码）
+      placeholder: 粘贴日志内容...
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他信息
+      description: 任何其他可能有助于解决问题的信息
+      placeholder: 例如：这个问题在之前的版本中不存在...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认
+      options:
+        - label: 我已将程序更新到最新版本
+          required: true
+        - label: 我已经搜索过现有的 Issues，确认这是一个新问题
+          required: true
+        - label: 我已经移除了所有敏感信息
+          required: true

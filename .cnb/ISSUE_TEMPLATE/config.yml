@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🐛 报告 Bug
+    url: https://github.com/zhxycn/whutjwxk/issues/new?template=bug_report.yml
+    about: 在 GitHub 上报告程序错误
+  - name: 💡 功能请求
+    url: https://github.com/zhxycn/whutjwxk/issues/new?template=feature_request.yml
+    about: 在 GitHub 上提出新功能建议
+  - name: ❓ 问题咨询
+    url: https://github.com/zhxycn/whutjwxk/issues/new?template=question.yml
+    about: 在 GitHub 上提问或寻求帮助
+  - name: 📖 查看文档
+    url: https://github.com/zhxycn/whutjwxk#readme
+    about: 查看项目 README 了解使用说明

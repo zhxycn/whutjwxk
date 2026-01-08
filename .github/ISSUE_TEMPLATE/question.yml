@@ -1,0 +1,59 @@
+name: ❓ 问题咨询
+description: 询问使用问题或需要帮助
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        如果您在使用过程中遇到问题或需要帮助，请在这里提问。
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 您的问题
+      description: 请详细描述您的问题
+      placeholder: 例如：我为什么收不到更新通知？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: 操作系统
+      description: 您使用的操作系统
+      options:
+        - Windows 7/8
+        - Windows 10/11
+        - macOS (Apple Silicon)
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 程序版本
+      description: 您使用的程序版本号，或位于页面左下角的 commit hash
+      placeholder: 例如：0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 相关上下文
+      description: 提供任何可能有助于回答问题的额外信息
+      placeholder: 例如：我已经尝试了...但是...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认
+      options:
+        - label: 我已将程序更新到最新版本
+          required: true
+        - label: 我已经搜索过现有的 Issues，确认这是一个新问题
+          required: true

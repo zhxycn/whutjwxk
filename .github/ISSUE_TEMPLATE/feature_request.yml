@@ -1,0 +1,49 @@
+name: 💡 功能请求
+description: 提出新功能或改进建议
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您提出功能建议！请详细描述您希望添加的功能或改进。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 这个功能要解决什么问题？或者您希望改进什么？
+      placeholder: 例如：我希望能够导出选课计划，方便分享给同学
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 建议的解决方案
+      description: 您希望如何实现这个功能？
+      placeholder: 例如：在课程列表中添加"导出"按钮，可以导出为 JSON 或 CSV 格式
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级
+      description: 您认为这个功能的重要程度
+      options:
+        - 高 - 严重影响使用体验
+        - 中 - 能显著提升使用体验
+        - 低 - 锦上添花的功能
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认
+      options:
+        - label: 我已将程序更新到最新版本
+          required: true
+        - label: 我已经搜索过现有的 Issues，确认这是一个新功能
+          required: true
