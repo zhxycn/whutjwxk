@@ -93,7 +93,7 @@ export default function FilterHeader({
           <div className="relative w-full md:flex-1 min-w-0">
             <input
               type="text"
-              placeholder="搜索课程/教师/编号..."
+              placeholder="搜索课程/教师/编号... (支持正则表达式)"
               className={`w-full pl-8 ${hasSearch ? "pr-8" : "pr-3"} py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 outline-none`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

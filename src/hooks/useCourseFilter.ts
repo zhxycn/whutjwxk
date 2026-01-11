@@ -7,18 +7,47 @@ export function useCourseFilter(courses: any[]) {
   const [onlyAvailable, setOnlyAvailable] = useState(false);
 
   const filteredCourses = useMemo(() => {
+    // try to parse as regex (if starts with / and ends with /)
+    let regex: RegExp | null = null;
+    let useRegex = false;
+    if (searchTerm.trim().length > 0) {
+      const trimmed = searchTerm.trim();
+      if (trimmed.startsWith("/") && trimmed.endsWith("/") && trimmed.length > 2) {
+        try {
+          const pattern = trimmed.slice(1, -1);
+          regex = new RegExp(pattern, "i");
+          useRegex = true;
+        } catch (e) {
+          // fallback to normal text search
+          regex = null;
+          useRegex = false;
+        }
+      }
+    }
+
     return courses
       .map((group) => {
         const filterSection = (section: any) => {
-          const searchLower = searchTerm.toLowerCase();
-          if (searchLower) {
-            const match =
-              (section.KCM &&
-                section.KCM.toLowerCase().includes(searchLower)) ||
-              (section.SKJS &&
-                section.SKJS.toLowerCase().includes(searchLower)) ||
-              (section.JXBID && section.JXBID.includes(searchLower)) ||
-              (section.id && section.id.includes(searchLower));
+          if (searchTerm.trim().length > 0) {
+            let match = false;
+            if (useRegex && regex) {
+              // regex match
+              match =
+                (section.KCM && regex.test(section.KCM)) ||
+                (section.SKJS && regex.test(section.SKJS)) ||
+                (section.JXBID && regex.test(String(section.JXBID))) ||
+                (section.id && regex.test(String(section.id)));
+            } else {
+              // normal text search
+              const searchLower = searchTerm.toLowerCase();
+              match =
+                (section.KCM &&
+                  section.KCM.toLowerCase().includes(searchLower)) ||
+                (section.SKJS &&
+                  section.SKJS.toLowerCase().includes(searchLower)) ||
+                (section.JXBID && String(section.JXBID).includes(searchLower)) ||
+                (section.id && String(section.id).includes(searchLower));
+            }
             if (!match) return false;
           }
 
