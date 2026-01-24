@@ -38,6 +38,8 @@ export default function SessionManager() {
   return (
     <div className="h-screen w-screen overflow-hidden bg-gray-50 p-4 font-sans text-gray-800 text-sm flex flex-col">
       <div className="max-w-7xl w-full mx-auto flex-1 min-h-0 flex flex-col">
+        <Updater />
+        
         {!isLoggedIn ? (
           <div className="flex-1 flex items-center justify-center">
             <LoginForm
@@ -49,10 +51,7 @@ export default function SessionManager() {
             />
           </div>
         ) : (
-          <>
-            <Updater />
-            <Dashboard studentInfo={studentInfo} />
-          </>
+          <Dashboard studentInfo={studentInfo} />
         )}
       </div>
     </div>
