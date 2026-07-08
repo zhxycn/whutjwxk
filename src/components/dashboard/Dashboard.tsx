@@ -29,9 +29,14 @@ export default function Dashboard({ studentInfo }: Props) {
     setSelectedBatch,
     selectedType,
     setSelectedType,
+    selectedCampus,
+    setSelectedCampus,
   } = useBatches(studentInfo);
 
   const { classTypes, defaultType } = useClassTypes(selectedBatch, addLog);
+
+  const isMultiCampus =
+    batches.find((b) => b.code === selectedBatch)?.multiCampus === "1";
 
   const {
     courses,
@@ -40,7 +45,7 @@ export default function Dashboard({ studentInfo }: Props) {
     fetchCourses,
     fetchSelectedCourses,
     handleDropCourse,
-  } = useCourseData(selectedBatch, selectedType, addLog);
+  } = useCourseData(selectedBatch, selectedType, selectedCampus, addLog);
 
   const {
     searchTerm,
@@ -111,6 +116,9 @@ export default function Dashboard({ studentInfo }: Props) {
           classTypes={classTypes}
           selectedType={selectedType}
           onSelectedTypeChange={setSelectedType}
+          showCampus={isMultiCampus}
+          selectedCampus={selectedCampus}
+          onSelectedCampusChange={setSelectedCampus}
           intervalMs={intervalMs}
           onIntervalChange={setIntervalMs}
         />

@@ -7,18 +7,21 @@ impl JwxkClient {
         &self,
         batch_code: &str,
         class_type: &str,
+        campus: &str,
         page: i32,
     ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/list";
         let headers = self.auth_headers(Some(batch_code)).await?;
 
-        let payload = serde_json::json!({
+        let mut payload = serde_json::json!({
             "teachingClassType": class_type,
             "pageNumber": page,
             "pageSize": 1000,
-            "orderBy": "",
-            "campus": "02"
+            "orderBy": ""
         });
+        if class_type != "ALLKC" && !campus.is_empty() {
+            payload["campus"] = serde_json::json!(campus);
+        }
 
         let resp = self
             .client

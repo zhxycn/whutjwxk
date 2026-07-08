@@ -14,8 +14,9 @@ export const checkSession = () => invoke("check_session", {});
 export const getCourseList = (
   batchCode: string,
   classType: string,
+  campus: string,
   page: number,
-) => invoke("get_course_list", { batchCode, classType, page });
+) => invoke("get_course_list", { batchCode, classType, campus, page });
 
 export const grabCourse = (
   clazzId: string,

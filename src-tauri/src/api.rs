@@ -27,9 +27,12 @@ pub async fn get_course_list(
     state: State<'_, JwxkClient>,
     batch_code: String,
     class_type: String,
+    campus: String,
     page: i32,
 ) -> Result<serde_json::Value, CommandError> {
-    state.get_course_list(&batch_code, &class_type, page).await
+    state
+        .get_course_list(&batch_code, &class_type, &campus, page)
+        .await
 }
 
 #[tauri::command]

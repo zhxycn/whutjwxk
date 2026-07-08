@@ -5,12 +5,14 @@ export interface Batch {
   name: string;
   beginTime?: string;
   endTime?: string;
+  multiCampus?: string;
 }
 
 export function useBatches(studentInfo: any | null) {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [selectedBatch, setSelectedBatch] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedCampus, setSelectedCampus] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -20,6 +22,9 @@ export function useBatches(studentInfo: any | null) {
       setBatches(studentInfo.electiveBatchList);
       setSelectedBatch(studentInfo.electiveBatchList[0].code);
     }
+    if (studentInfo?.campus) {
+      setSelectedCampus(studentInfo.campus);
+    }
   }, [studentInfo]);
 
   return {
@@ -28,5 +33,7 @@ export function useBatches(studentInfo: any | null) {
     setSelectedBatch,
     selectedType,
     setSelectedType,
+    selectedCampus,
+    setSelectedCampus,
   };
 }

@@ -9,6 +9,7 @@ import { LogLevel } from "./useLogger";
 export function useCourseData(
   selectedBatch: string,
   selectedType: string,
+  selectedCampus: string,
   addLog: (msg: string, level?: LogLevel, details?: any) => void,
 ) {
   const [courses, setCourses] = useState<any[]>([]);
@@ -26,7 +27,12 @@ export function useCourseData(
       const allRows: any[] = [];
       let page = 1;
       while (true) {
-        const res: any = await getCourseList(selectedBatch, selectedType, page);
+        const res: any = await getCourseList(
+          selectedBatch,
+          selectedType,
+          selectedCampus,
+          page,
+        );
         if (gen !== fetchGenRef.current) return;
         if (res.code !== 200) {
           addLog(`第 ${page} 页获取失败`, "error", res);
@@ -134,7 +140,7 @@ export function useCourseData(
     if (selectedBatch && selectedType) {
       fetchCourses();
     }
-  }, [selectedBatch, selectedType]);
+  }, [selectedBatch, selectedType, selectedCampus]);
 
   return {
     courses,

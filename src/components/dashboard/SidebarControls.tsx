@@ -1,3 +1,5 @@
+import { CAMPUS_LIST } from "../../constants/campus";
+
 interface Batch {
   code: string;
   name: string;
@@ -10,9 +12,15 @@ interface Props {
   classTypes: Record<string, string>;
   selectedType: string;
   onSelectedTypeChange: (type: string) => void;
+  showCampus: boolean;
+  selectedCampus: string;
+  onSelectedCampusChange: (code: string) => void;
   intervalMs: number;
   onIntervalChange: (ms: number) => void;
 }
+
+const selectClass =
+  "w-full p-2 pr-8 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none appearance-none bg-white bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-size-[1.25rem_1.25rem] bg-position-[right_0.5rem_center] bg-no-repeat";
 
 export default function SidebarControls({
   batches,
@@ -21,6 +29,9 @@ export default function SidebarControls({
   classTypes,
   selectedType,
   onSelectedTypeChange,
+  showCampus,
+  selectedCampus,
+  onSelectedCampusChange,
   intervalMs,
   onIntervalChange,
 }: Props) {
@@ -35,7 +46,7 @@ export default function SidebarControls({
             选课批次
           </label>
           <select
-            className="w-full p-2 pr-8 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none appearance-none bg-white bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-size-[1.25rem_1.25rem] bg-position-[right_0.5rem_center] bg-no-repeat"
+            className={selectClass}
             value={selectedBatch}
             onChange={(e) => onSelectedBatchChange(e.target.value)}
           >
@@ -51,7 +62,7 @@ export default function SidebarControls({
             课程类型
           </label>
           <select
-            className="w-full p-2 pr-8 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-blue-500 outline-none appearance-none bg-white bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-size-[1.25rem_1.25rem] bg-position-[right_0.5rem_center] bg-no-repeat"
+            className={selectClass}
             value={selectedType}
             onChange={(e) => onSelectedTypeChange(e.target.value)}
           >
@@ -62,6 +73,24 @@ export default function SidebarControls({
             ))}
           </select>
         </div>
+        {showCampus && (
+          <div>
+            <label className="block text-xs font-medium mb-1 text-gray-500">
+              校区
+            </label>
+            <select
+              className={selectClass}
+              value={selectedCampus}
+              onChange={(e) => onSelectedCampusChange(e.target.value)}
+            >
+              {CAMPUS_LIST.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div>
           <label className="text-xs font-medium mb-1 text-gray-500 flex justify-between">
             <span>请求间隔</span>
