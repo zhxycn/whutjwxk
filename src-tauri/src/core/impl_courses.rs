@@ -1,6 +1,6 @@
 use super::client::JwxkClient;
 use super::models::CommandError;
-use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
+use reqwest::header::{HeaderValue, CONTENT_TYPE};
 
 impl JwxkClient {
     pub async fn get_course_list(
@@ -10,12 +10,7 @@ impl JwxkClient {
         page: i32,
     ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/list";
-        let token_guard = self.token.lock().await;
-        let token = token_guard.as_ref().ok_or("Not logged in")?;
-
-        let mut headers = HeaderMap::new();
-        headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
-        headers.insert("Batchid", HeaderValue::from_str(batch_code).unwrap());
+        let headers = self.auth_headers(Some(batch_code)).await?;
 
         let payload = serde_json::json!({
             "teachingClassType": class_type,
@@ -55,12 +50,7 @@ impl JwxkClient {
             "https://jwxk.whut.edu.cn/xsxk/elective/grablessons?batchId={}",
             batch_id
         );
-        let token_guard = self.token.lock().await;
-        let token = token_guard.as_ref().ok_or("Not logged in")?;
-
-        let mut headers = HeaderMap::new();
-        headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
-        headers.insert("batchId", HeaderValue::from_str(batch_id).unwrap());
+        let headers = self.auth_headers(Some(batch_id)).await?;
 
         let resp = self
             .client
@@ -95,11 +85,7 @@ impl JwxkClient {
 
     pub async fn get_selected_courses(&self, batch_id: &str) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/select";
-        let token_guard = self.token.lock().await;
-        let token = token_guard.as_ref().ok_or("Not logged in")?;
-
-        let mut headers = HeaderMap::new();
-        headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
+        let mut headers = self.auth_headers(None).await?;
         headers.insert(
             CONTENT_TYPE,
             HeaderValue::from_static("application/json;charset=UTF-8"),

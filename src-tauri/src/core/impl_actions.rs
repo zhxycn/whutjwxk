@@ -1,6 +1,6 @@
 use super::client::JwxkClient;
 use super::CommandError;
-use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
+use reqwest::header::{HeaderValue, CONTENT_TYPE};
 
 impl JwxkClient {
     pub async fn grab_course_with_type(
@@ -11,14 +11,7 @@ impl JwxkClient {
         clazz_type: &str,
     ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/add";
-        let token_guard = self.token.lock().await;
-        let token = token_guard
-            .as_ref()
-            .ok_or_else(|| CommandError::from("Not logged in".to_string()))?;
-
-        let mut headers = HeaderMap::new();
-        headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
-        headers.insert("batchId", HeaderValue::from_str(batch_id).unwrap());
+        let mut headers = self.auth_headers(Some(batch_id)).await?;
         headers.insert(
             CONTENT_TYPE,
             HeaderValue::from_static("application/x-www-form-urlencoded"),
@@ -54,14 +47,7 @@ impl JwxkClient {
         batch_id: &str,
     ) -> Result<serde_json::Value, CommandError> {
         let url = "https://jwxk.whut.edu.cn/xsxk/elective/clazz/del";
-        let token_guard = self.token.lock().await;
-        let token = token_guard
-            .as_ref()
-            .ok_or_else(|| CommandError::from("Not logged in".to_string()))?;
-
-        let mut headers = HeaderMap::new();
-        headers.insert("Authorization", HeaderValue::from_str(token).unwrap());
-        headers.insert("batchId", HeaderValue::from_str(batch_id).unwrap());
+        let mut headers = self.auth_headers(Some(batch_id)).await?;
         headers.insert(
             CONTENT_TYPE,
             HeaderValue::from_static("application/x-www-form-urlencoded"),

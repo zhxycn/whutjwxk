@@ -151,7 +151,7 @@ export default function FilterHeader({
             <button
               onClick={onRefresh}
               disabled={loading || !selectedBatch || !selectedType}
-              className={`flex itemsCenter gap-1.5 text-xs px-2 py-1.5 rounded border transition ${
+              className={`flex items-center gap-1.5 text-xs px-2 py-1.5 rounded border transition ${
                 loading
                   ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
                   : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"

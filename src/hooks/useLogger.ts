@@ -16,7 +16,7 @@ export function useLogger() {
   const addLog = (msg: string, level: LogLevel = "info", details?: any) => {
     setLog((prev) => {
       const newItem: LogItem = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: crypto.randomUUID(),
         level,
         message: msg,
         timestamp: new Date().toLocaleTimeString(),

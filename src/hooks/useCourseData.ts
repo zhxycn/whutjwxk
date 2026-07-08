@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getCourseList,
   getSelectedCourses as apiGetSelectedCourses,
@@ -14,8 +14,11 @@ export function useCourseData(
   const [courses, setCourses] = useState<any[]>([]);
   const [selectedCourses, setSelectedCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  // 请求代次，用于丢弃切换批次/类型后仍在进行的旧请求结果
+  const fetchGenRef = useRef(0);
 
   const fetchCourses = async () => {
+    const gen = ++fetchGenRef.current;
     setLoading(true);
     try {
       addLog(`正在获取课程列表: ${selectedType}...`, "info");
@@ -24,6 +27,7 @@ export function useCourseData(
       let page = 1;
       while (true) {
         const res: any = await getCourseList(selectedBatch, selectedType, page);
+        if (gen !== fetchGenRef.current) return;
         if (res.code !== 200) {
           addLog(`第 ${page} 页获取失败`, "error", res);
           break;
@@ -54,10 +58,13 @@ export function useCourseData(
         "success",
       );
     } catch (e: any) {
+      if (gen !== fetchGenRef.current) return;
       setCourses([]);
       addLog("获取课程错误", "error", e);
     } finally {
-      setLoading(false);
+      if (gen === fetchGenRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -108,6 +115,8 @@ export function useCourseData(
 
   useEffect(() => {
     if (selectedBatch) {
+      fetchGenRef.current++;
+      setLoading(false);
       setCourses([]);
       setSelectedCourses([]);
     }
@@ -115,6 +124,8 @@ export function useCourseData(
 
   useEffect(() => {
     if (!selectedType) {
+      fetchGenRef.current++;
+      setLoading(false);
       setCourses([]);
     }
   }, [selectedType]);

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { getCapacity, getEnrolled } from "../utils/course";
 
 export function useCourseFilter(courses: any[]) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,17 +70,7 @@ export function useCourseFilter(courses: any[]) {
           }
 
           if (onlyAvailable) {
-            const capacity =
-              section.KCRL ||
-              section.JXBRL ||
-              section.jxbrl ||
-              section.zrs ||
-              section.KRL ||
-              section.classCapacity ||
-              0;
-            const enrolled =
-              section.YXRS || section.yxrs || section.numberOfSelected || 0;
-            if (enrolled >= capacity) return false;
+            if (getEnrolled(section) >= getCapacity(section)) return false;
 
             if (
               section.SFCT === "1" ||

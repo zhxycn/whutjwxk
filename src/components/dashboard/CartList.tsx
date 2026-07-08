@@ -1,3 +1,5 @@
+import { getCourseId } from "../../utils/course";
+
 type Props = {
   cart: any[];
   removeFromCart: (courseId: string) => void;
@@ -16,9 +18,8 @@ export default function CartList({
       {cart.length > 0 ? (
         <>
           <div className="flex-1 overflow-y-auto space-y-2 mb-4">
-            {cart.map((course) => {
-              const courseId =
-                course.JXBID || course.jxb_id || course.do_jxb_id || course.id;
+            {cart.map((course, idx) => {
+              const courseId = getCourseId(course);
               let statusClass = "border-gray-200 hover:border-blue-200";
               let statusIcon = "⏳";
               let statusText = "等待中";
@@ -39,7 +40,7 @@ export default function CartList({
 
               return (
                 <div
-                  key={courseId || Math.random()}
+                  key={courseId || `cart-${idx}`}
                   className={`bg-white border p-3 rounded flex justify-between items-center transition ${statusClass}`}
                 >
                   <div className="flex-1 min-w-0 pr-4">
