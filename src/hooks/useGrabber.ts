@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { grabCourse as apiGrabCourse } from "../services/jwxk";
 import { LogLevel } from "./useLogger";
+import { Batch } from "./useBatches";
 
 export function useGrabber(
   selectedBatch: string,
   selectedType: string,
   addLog: (msg: string, level?: LogLevel, details?: any) => void,
+  batches: Batch[] = [],
 ) {
   const [cart, setCart] = useState<any[]>([]);
   const [isGrabbing, setIsGrabbing] = useState(false);
@@ -33,8 +35,19 @@ export function useGrabber(
       addLog(`${course.KCM} 已经在待抢列表中`, "warn");
       return;
     }
-    setCart((prev) => [...prev, { ...course, grabStatus: "idle" }]);
-    addLog(`已添加 ${course.KCM} 到待抢列表`, "info");
+    const batchName =
+      batches.find((b) => b.code === selectedBatch)?.name || selectedBatch;
+    setCart((prev) => [
+      ...prev,
+      {
+        ...course,
+        grabStatus: "idle",
+        grabBatchId: selectedBatch,
+        grabBatchName: batchName,
+        grabClazzType: selectedType,
+      },
+    ]);
+    addLog(`已添加 ${course.KCM} 到待抢列表 (批次: ${batchName})`, "info");
   };
 
   const removeFromCart = (courseId: string) => {
@@ -65,16 +78,19 @@ export function useGrabber(
           }),
         );
 
+        const batchId = item.grabBatchId || selectedBatch;
+        const clazzType = item.grabClazzType || selectedType;
+
         try {
           addLog(
-            `正在抢 ${item.KCM} (${i + 1}/${currentCart.length})...`,
+            `正在抢 ${item.KCM} [${item.grabBatchName || batchId}] (${i + 1}/${currentCart.length})...`,
             "info",
           );
           const res: any = await apiGrabCourse(
             clazzId,
             item.secretVal || "",
-            selectedBatch,
-            selectedType,
+            batchId,
+            clazzType,
           );
           if (res.code === 200) {
             consecutiveAuthFailures = 0;

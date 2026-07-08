@@ -50,6 +50,14 @@ export default function CartList({
                       <span className="text-xs text-gray-500">
                         ({course.SKJS})
                       </span>
+                      {course.grabBatchName && (
+                        <span
+                          className="text-xs px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-100 whitespace-nowrap truncate max-w-40"
+                          title={course.grabBatchName}
+                        >
+                          {course.grabBatchName}
+                        </span>
+                      )}
                     </div>
                     <div className="text-xs flex items-center gap-1">
                       <span>{statusIcon}</span>

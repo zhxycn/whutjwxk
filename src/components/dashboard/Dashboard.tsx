@@ -62,7 +62,7 @@ export default function Dashboard({ studentInfo }: Props) {
     toggleGrab,
     intervalMs,
     setIntervalMs,
-  } = useGrabber(selectedBatch, selectedType, addLog);
+  } = useGrabber(selectedBatch, selectedType, addLog, batches);
 
   useEffect(() => {
     setSelectedType(defaultType || "");
